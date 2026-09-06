@@ -10,33 +10,53 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as BulkBoardRouteImport } from './routes/bulk-board'
+import { Route as ListCropRouteImport } from './routes/list-crop'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const BulkBoardRoute = BulkBoardRouteImport.update({
+  id: '/bulk-board',
+  path: '/bulk-board',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ListCropRoute = ListCropRouteImport.update({
+  id: '/list-crop',
+  path: '/list-crop',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/bulk-board': typeof BulkBoardRoute
+  '/list-crop': typeof ListCropRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/bulk-board': typeof BulkBoardRoute
+  '/list-crop': typeof ListCropRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/bulk-board': typeof BulkBoardRoute
+  '/list-crop': typeof ListCropRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/bulk-board' | '/list-crop'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/bulk-board' | '/list-crop'
+  id: '__root__' | '/' | '/bulk-board' | '/list-crop'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  BulkBoardRoute: typeof BulkBoardRoute
+  ListCropRoute: typeof ListCropRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +68,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/bulk-board': {
+      id: '/bulk-board'
+      path: '/bulk-board'
+      fullPath: '/bulk-board'
+      preLoaderRoute: typeof BulkBoardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/list-crop': {
+      id: '/list-crop'
+      path: '/list-crop'
+      fullPath: '/list-crop'
+      preLoaderRoute: typeof ListCropRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  BulkBoardRoute: BulkBoardRoute,
+  ListCropRoute: ListCropRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
