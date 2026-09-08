@@ -11,7 +11,9 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as BulkBoardRouteImport } from './routes/bulk-board'
+import { Route as ForecastRouteImport } from './routes/forecast'
 import { Route as ListCropRouteImport } from './routes/list-crop'
+import { Route as LogisticsRouteImport } from './routes/logistics'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -23,40 +25,59 @@ const BulkBoardRoute = BulkBoardRouteImport.update({
   path: '/bulk-board',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ForecastRoute = ForecastRouteImport.update({
+  id: '/forecast',
+  path: '/forecast',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ListCropRoute = ListCropRouteImport.update({
   id: '/list-crop',
   path: '/list-crop',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LogisticsRoute = LogisticsRouteImport.update({
+  id: '/logistics',
+  path: '/logistics',
   getParentRoute: () => rootRouteImport,
 } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/bulk-board': typeof BulkBoardRoute
+  '/forecast': typeof ForecastRoute
   '/list-crop': typeof ListCropRoute
+  '/logistics': typeof LogisticsRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/bulk-board': typeof BulkBoardRoute
+  '/forecast': typeof ForecastRoute
   '/list-crop': typeof ListCropRoute
+  '/logistics': typeof LogisticsRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/bulk-board': typeof BulkBoardRoute
+  '/forecast': typeof ForecastRoute
   '/list-crop': typeof ListCropRoute
+  '/logistics': typeof LogisticsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/bulk-board' | '/list-crop'
+  fullPaths: '/' | '/bulk-board' | '/forecast' | '/list-crop' | '/logistics'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/bulk-board' | '/list-crop'
-  id: '__root__' | '/' | '/bulk-board' | '/list-crop'
+  to: '/' | '/bulk-board' | '/forecast' | '/list-crop' | '/logistics'
+  id:
+    '__root__' | '/' | '/bulk-board' | '/forecast' | '/list-crop' | '/logistics'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   BulkBoardRoute: typeof BulkBoardRoute
+  ForecastRoute: typeof ForecastRoute
   ListCropRoute: typeof ListCropRoute
+  LogisticsRoute: typeof LogisticsRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -75,11 +96,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BulkBoardRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/forecast': {
+      id: '/forecast'
+      path: '/forecast'
+      fullPath: '/forecast'
+      preLoaderRoute: typeof ForecastRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/list-crop': {
       id: '/list-crop'
       path: '/list-crop'
       fullPath: '/list-crop'
       preLoaderRoute: typeof ListCropRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/logistics': {
+      id: '/logistics'
+      path: '/logistics'
+      fullPath: '/logistics'
+      preLoaderRoute: typeof LogisticsRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
@@ -88,7 +123,9 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   BulkBoardRoute: BulkBoardRoute,
+  ForecastRoute: ForecastRoute,
   ListCropRoute: ListCropRoute,
+  LogisticsRoute: LogisticsRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
