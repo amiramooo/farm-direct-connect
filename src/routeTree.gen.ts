@@ -10,14 +10,26 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
+import { Route as AuthRouteImport } from './routes/auth'
 import { Route as BulkBoardRouteImport } from './routes/bulk-board'
 import { Route as ForecastRouteImport } from './routes/forecast'
 import { Route as ListCropRouteImport } from './routes/list-crop'
 import { Route as LogisticsRouteImport } from './routes/logistics'
+import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
 const BulkBoardRoute = BulkBoardRouteImport.update({
@@ -40,40 +52,76 @@ const LogisticsRoute = LogisticsRouteImport.update({
   path: '/logistics',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
   '/bulk-board': typeof BulkBoardRoute
   '/forecast': typeof ForecastRoute
   '/list-crop': typeof ListCropRoute
   '/logistics': typeof LogisticsRoute
+  '/dashboard': typeof AuthenticatedDashboardRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
   '/bulk-board': typeof BulkBoardRoute
   '/forecast': typeof ForecastRoute
   '/list-crop': typeof ListCropRoute
   '/logistics': typeof LogisticsRoute
+  '/dashboard': typeof AuthenticatedDashboardRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/auth': typeof AuthRoute
   '/bulk-board': typeof BulkBoardRoute
   '/forecast': typeof ForecastRoute
   '/list-crop': typeof ListCropRoute
   '/logistics': typeof LogisticsRoute
+  '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/bulk-board' | '/forecast' | '/list-crop' | '/logistics'
+  fullPaths:
+    | '/'
+    | '/auth'
+    | '/bulk-board'
+    | '/forecast'
+    | '/list-crop'
+    | '/logistics'
+    | '/dashboard'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/bulk-board' | '/forecast' | '/list-crop' | '/logistics'
+  to:
+    | '/'
+    | '/auth'
+    | '/bulk-board'
+    | '/forecast'
+    | '/list-crop'
+    | '/logistics'
+    | '/dashboard'
   id:
-    '__root__' | '/' | '/bulk-board' | '/forecast' | '/list-crop' | '/logistics'
+    | '__root__'
+    | '/'
+    | '/_authenticated'
+    | '/auth'
+    | '/bulk-board'
+    | '/forecast'
+    | '/list-crop'
+    | '/logistics'
+    | '/_authenticated/dashboard'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+  AuthRoute: typeof AuthRoute
   BulkBoardRoute: typeof BulkBoardRoute
   ForecastRoute: typeof ForecastRoute
   ListCropRoute: typeof ListCropRoute
@@ -87,6 +135,20 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/bulk-board': {
@@ -117,11 +179,31 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LogisticsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/dashboard': {
+      id: '/_authenticated/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof AuthenticatedDashboardRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
 
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
+}
+
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
+}
+
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+  AuthRoute: AuthRoute,
   BulkBoardRoute: BulkBoardRoute,
   ForecastRoute: ForecastRoute,
   ListCropRoute: ListCropRoute,
