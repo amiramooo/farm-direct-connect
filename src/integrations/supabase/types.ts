@@ -14,16 +14,143 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      listings: {
+        Row: {
+          city: string
+          created_at: string
+          crop: string
+          farmer_id: string
+          harvest_date: string
+          id: string
+          price_per_kg: number
+          quantity_kg: number
+          status: string
+        }
+        Insert: {
+          city: string
+          created_at?: string
+          crop: string
+          farmer_id: string
+          harvest_date: string
+          id?: string
+          price_per_kg: number
+          quantity_kg: number
+          status?: string
+        }
+        Update: {
+          city?: string
+          created_at?: string
+          crop?: string
+          farmer_id?: string
+          harvest_date?: string
+          id?: string
+          price_per_kg?: number
+          quantity_kg?: number
+          status?: string
+        }
+        Relationships: []
+      }
+      orders: {
+        Row: {
+          buyer_id: string
+          created_at: string
+          id: string
+          listing_id: string
+          note: string
+          price_per_kg: number
+          quantity_kg: number
+          status: string
+        }
+        Insert: {
+          buyer_id: string
+          created_at?: string
+          id?: string
+          listing_id: string
+          note?: string
+          price_per_kg: number
+          quantity_kg: number
+          status?: string
+        }
+        Update: {
+          buyer_id?: string
+          created_at?: string
+          id?: string
+          listing_id?: string
+          note?: string
+          price_per_kg?: number
+          quantity_kg?: number
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "orders_listing_id_fkey"
+            columns: ["listing_id"]
+            isOneToOne: false
+            referencedRelation: "listings"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          city: string
+          created_at: string
+          full_name: string
+          id: string
+          org: string
+          phone: string
+        }
+        Insert: {
+          city?: string
+          created_at?: string
+          full_name?: string
+          id: string
+          org?: string
+          phone?: string
+        }
+        Update: {
+          city?: string
+          created_at?: string
+          full_name?: string
+          id?: string
+          org?: string
+          phone?: string
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "farmer" | "buyer"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +277,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["farmer", "buyer"],
+    },
   },
 } as const
