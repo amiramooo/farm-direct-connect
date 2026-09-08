@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthRouteImport } from './routes/auth'
 import { Route as BulkBoardRouteImport } from './routes/bulk-board'
 import { Route as ForecastRouteImport } from './routes/forecast'
 import { Route as ListCropRouteImport } from './routes/list-crop'
@@ -18,6 +19,11 @@ import { Route as LogisticsRouteImport } from './routes/logistics'
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
 const BulkBoardRoute = BulkBoardRouteImport.update({
@@ -43,6 +49,7 @@ const LogisticsRoute = LogisticsRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
   '/bulk-board': typeof BulkBoardRoute
   '/forecast': typeof ForecastRoute
   '/list-crop': typeof ListCropRoute
@@ -50,6 +57,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
   '/bulk-board': typeof BulkBoardRoute
   '/forecast': typeof ForecastRoute
   '/list-crop': typeof ListCropRoute
@@ -58,6 +66,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
   '/bulk-board': typeof BulkBoardRoute
   '/forecast': typeof ForecastRoute
   '/list-crop': typeof ListCropRoute
@@ -65,15 +74,23 @@ export interface FileRoutesById {
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/bulk-board' | '/forecast' | '/list-crop' | '/logistics'
+  fullPaths:
+    '/' | '/auth' | '/bulk-board' | '/forecast' | '/list-crop' | '/logistics'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/bulk-board' | '/forecast' | '/list-crop' | '/logistics'
+  to: '/' | '/auth' | '/bulk-board' | '/forecast' | '/list-crop' | '/logistics'
   id:
-    '__root__' | '/' | '/bulk-board' | '/forecast' | '/list-crop' | '/logistics'
+    | '__root__'
+    | '/'
+    | '/auth'
+    | '/bulk-board'
+    | '/forecast'
+    | '/list-crop'
+    | '/logistics'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthRoute: typeof AuthRoute
   BulkBoardRoute: typeof BulkBoardRoute
   ForecastRoute: typeof ForecastRoute
   ListCropRoute: typeof ListCropRoute
@@ -87,6 +104,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/bulk-board': {
@@ -122,6 +146,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthRoute: AuthRoute,
   BulkBoardRoute: BulkBoardRoute,
   ForecastRoute: ForecastRoute,
   ListCropRoute: ListCropRoute,
