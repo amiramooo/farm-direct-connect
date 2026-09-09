@@ -24,8 +24,28 @@ export type OrderRow = {
   price_per_kg: number;
   note: string;
   status: string;
+  payment_status: string;
+  paid_at: string | null;
+  picked_up_at: string | null;
   created_at: string;
   listings: { crop: string; city: string; farmer_id: string } | null;
+};
+
+export type PayoutRow = {
+  id: string;
+  order_id: string;
+  farmer_id: string;
+  amount: number;
+  status: string;
+  released_at: string | null;
+  settled_at: string | null;
+  created_at: string;
+  orders: {
+    quantity_kg: number;
+    price_per_kg: number;
+    status: string;
+    listings: { crop: string; city: string } | null;
+  } | null;
 };
 
 const listingSelect =

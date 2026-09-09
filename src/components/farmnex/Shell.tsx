@@ -7,6 +7,7 @@ const navItems = [
   { to: "/bulk-board", label: "Bulk board" },
   { to: "/forecast", label: "Forecast" },
   { to: "/logistics", label: "Logistics" },
+  { to: "/payouts", label: "Payouts" },
 ] as const;
 
 export function Shell({ children }: { children: ReactNode }) {
