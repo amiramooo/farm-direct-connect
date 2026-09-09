@@ -1,252 +1,603 @@
 # Farm Direct Connect
 
-Yes — this is a strong SIH problem statement, especially because it addresses a real supply-chain problem and can be demonstrated with a working prototype.
+ FarmNex 🌾
 
-🚜 Your idea in simple terms
 
-Currently, the supply chain can look like:
 
-Farmer → Local trader → Wholesaler → Distributor → Retailer → Consumer
+FarmNex is a digital marketplace that aims at connecting farmers and FPOs to consumers and bulk buyers.
 
-Every intermediary takes a margin. This can mean:
 
- Farmers receive a lower share of the final price.
 
- Consumers pay more.
+The idea is to remove any unnecessary intermediaries in order to ensure that farmers sell at a higher price and consumers and bulk buyers buy at a lower price.
 
- Farmers may not know where the best demand is.
 
- Transportation can be inefficient.
 
- Perishable crops may be wasted.
+It also provides tools for price analysis, demand forecasting and delivery route optimization.
 
-Your proposed platform changes this to:
+---
 
-Farmer/FPO → Digital Marketplace → Consumer / Bulk Buyer
 
-with a logistics + AI layer in between.
 
-💡 How I would build this for SIH
+## 🚜 The Problem
 
-Call the platform something like FarmNex — the name you were considering earlier actually fits this concept well.
 
-1. 👨‍🌾 Farmer/FPO App
 
-Farmers can:
+Agricultural supply chains often have a number of intermediaries:
 
- Register/login
 
- Create a farmer/FPO profile
 
- Add available crops
+```text
 
- Enter quantity
+Farmer → Local Trader → Wholesaler → Distributor → Retailer → Consumer
 
- Set expected price
+```
 
- Upload crop images
 
- Specify harvest date
 
- View current demand
+As a consequence of the multiple steps in the supply chain, the farmer does not recieve the majority of the selling price and the consumer has to pay a higher price than what the farmer recieved.
 
- Receive buyer orders
 
- Track payments
 
- Track pickup/delivery
+In addition there are other problems:
 
-Example:
 
-Tomato — 2,000 kg available
-Location — Hyderabad
-Harvest date — 10 Sept
-Expected price — ₹25/kg
 
-2. 🛒 Consumer Marketplace
+Farmers might not have a buyer in advance.
 
-Consumers can search:
+It might be challenging to estimate the demand.
 
-Tomatoes → Hyderabad → 10 kg
+Transportation might not be optimized.
 
-The platform shows available farmers/FPOs.
+Perishable goods might end up being wasted.
 
-Instead of:
+Bulk buyers might have to spend a lot of time searching for suppliers.
 
-Retailer price: ₹40/kg
 
-the consumer might see:
 
-Farmer/FPO price: ₹27/kg
+FarmNex aims at solving the problems by providing a digital platform.
+
+---
+
+
+
+## 💡 Our Approach
+
+
+
+FarmNex provides a more direct connection between producers and buyers:
+
+
+
+```text
+
+Farmer / FPO
+
+│
+
+▼
+
+FarmNex
+
+│
+
+┌────┴─────┐
+
+▼ ▼
+
+Consumer Bulk Buyer
+
+```
+
+
+
+It provides the marketplace and additional tools for pricing, demand analysis and logistics.
+
+---
+
+
+
+## 👨‍🌾 Farmer & FPO Portal
+
+
+
+Farmers and FPOs can create a profile and put up the products that are currently available for sale.
+
+
+
+They can input information such as:
+
+
+
+Crop/product name
+
+Available quantity
+
+Expected price
+
+Location
+
+Harvest date
+
+Product images
+
+Availability
+
+An example of an FPO listing would be:
+
+
+
+```text
+
+Product: Tomato
+
+Quantity: 2,000 kg
+
+Location: Hyderabad
+
+Harvest Date: 10 September
+
+Expected Price: ₹25/kg
+
+```
+
+
+
+Farmers can also check buyer requirements, recieve orders, get payment and track pickup/delivery status.
+
+---
+
+
+
+## 🛒 Consumer Marketplace
+
+
+
+Consumers can browse products from farmers and FPOs.
+
+
+
+It is possible to search and filter products by:
+
+
+
+Product
+
+Location
+
+Price
+
+Quantity
+
+Availability
+
+It is also possible to display an estimated price which takes into account the logistics cost such as:
+
+
+
+```text
+
+Farmer/FPO Price: ₹27/kg
+
 Logistics: ₹3/kg
-Final: ₹30/kg
 
-So the farmer gets a better price while the consumer potentially pays less.
+------------------
 
-3. 🏢 Bulk Buyer Portal
+Estimated Price: ₹30/kg
 
-This could be one of your strongest differentiators.
+```
 
-Allow:
+The intent is to provide a streamlined yet transparent marketplace.
 
- Restaurants
+---
 
- Hotels
 
- Supermarkets
 
- Food-processing companies
+## 🏢 Bulk Buyer Portal
 
- Wholesalers
+FarmNex also provides a marketplace specifically for those seeking to buy large amounts of agricultural produce.
 
- Institutional buyers
 
-to post requirements.
+
+Potential buyers are:
+
+
+
+Restaurants
+
+Hotels
+
+Supermarkets
+
+Food-processing companies
+
+Institutional buyers
+
+Other businesses
+
+
+
+A buyer can put forward a request such as:
+
+
+
+```text
+
+Product: Onion
+
+Quantity: 5,000 kg
+
+Maximum Price: ₹30/kg
+
+Location: Hyderabad
+
+Required By: 12 September
+
+```
+
+
+
+The system can then identify farmers or FPOs that have the onion in stock or who might have harvested it before the required date.
+
+
+
+In a future version it will also be possible to have B2B reverse bidding where those put up for sale can bid to sell to the buyer.
+
+---
+
+
+
+## 🤖 Demand Forecasting
+
+
+
+Based on historical or market data the expected demand for a product can be estimated.
+
+Examples of inputs are:
+
+Past sales
+
+Seasonal trends
+
+Market prices
+
+
+
+Crop availability
+
+Weather conditions
+
+Festival periods
+
+Location
+
+Past orders
+
+An example of a demand forecast is:
+
+```text
+
+Crop Current Demand Forecast
+
+--------------------------------------
+
+Tomato 10,000 kg 12,500 kg
+
+Onion 15,000 kg 16,000 kg
+
+Potato 8,000 kg 7,200 kg
+
+```
+
+---
+
+## 💰 Price Intelligence
+
+One of the key challenges for a farmer selling their goods is whether or not they are getting a fair price.
 
 For example:
 
-Requirement: 5,000 kg onions
+```text
+
+Product: Tomato
+
 Location: Hyderabad
-Delivery: 12 Sept
-Maximum price: ₹30/kg
 
-The system finds suitable farmers/FPOs.
+Quantity: 2,000 kg
 
-🤖 4. AI Demand Forecasting
+Current Market Range: ₹22–₹28/kg
 
-This is where your project becomes more than just an e-commerce website.
+Demand: High
 
-Your AI model can predict:
+Expected Demand: +18%
 
-"Demand for tomatoes in Hyderabad is expected to increase by 18% next week."
+Suggested Price: ₹26/kg
 
-It can use factors such as:
+Potential Buyers: 8
 
- Historical sales
-
- Seasonal patterns
-
- Crop availability
-
- Market prices
-
- Weather
-
- Festival periods
-
- Location
-
- Previous orders
-
-Example
-
-CropCurrent DemandPredicted DemandTomato10,000 kg12,500 kgOnion15,000 kg16,000 kgPotato8,000 kg7,200 kg
-
-Then farmers can make better decisions about what, when and where to sell.
-
-🚚 5. AI Route Optimization
-
-Suppose you have:
-
-Farmer A → 500 kg
-Farmer B → 700 kg
-Farmer C → 400 kg
-
-and buyers at three different locations.
-
-Instead of sending three separate vehicles, your system can calculate an efficient route.
-
-Example
-
-Farmers → Collection Point → Buyers
-
-The algorithm considers:
-
- Distance
-
- Vehicle capacity
-
- Delivery time
-
- Fuel cost
-
- Number of stops
-
- Perishable nature of produce
-
-You could use algorithms such as:
-
-Dijkstra / A* → shortest path
-
-and eventually model it as a:
-
-Vehicle Routing Problem (VRP)
-
-This gives you a very strong technical component for the SIH presentation.
-
-⭐ 6. A feature I strongly recommend: Price Intelligence
-
-Add a "Fair Price Recommendation" feature.
-
-Farmer enters:
-
-Tomato
-2,000 kg
-Hyderabad
-
-Your system displays:
-
-Current market range: ₹22–₹28/kg
-Predicted demand: High
-Recommended selling price: ₹26/kg
-Potential buyers: 8
-
-This helps prevent farmers from blindly accepting whatever price an intermediary offers.
-
-🔥 Your complete architecture
-
-                    FARMNEX
-                       │
-        ┌──────────────┴──────────────┐
-        │                             │
-     FARMERS/FPOs                 BUYERS
-        │                    ┌────────┴────────┐
-        │                    │                 │
-   Crop Listing          Consumers       Bulk Buyers
-        │                    │                 │
-        └────────────┬───────┴─────────────────┘
-                     │
-              DIGITAL MARKETPLACE
-                     │
-          ┌──────────┴──────────┐
-          │                     │
-    AI PRICE ENGINE       AI DEMAND FORECAST
-          │                     │
-          └──────────┬──────────┘
-                     │
-              LOGISTICS ENGINE
-                     │
-             ROUTE OPTIMIZATION
-                     │
-               DELIVERY TRACKING  create a app
-
-This project was built with [Lovable](https://lovable.dev).
-
-## Build with Lovable
-
-Continue developing this project in the [Lovable editor](https://lovable.dev/projects/5e63b13c-c006-4b90-8e56-74e9efacfb66).
-
-- **Ship faster**: describe what you want to build and Lovable handles the code.
-- **Stay in sync**: every change made in Lovable is committed straight to this repository.
-- **Full ownership**: this code is yours. Push to `main` on GitHub and your changes sync back into Lovable, ready for your next prompt.
-
-## Development
-
-Prefer working locally? You need Node.js and npm — [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating).
-
-```sh
-git clone <this-repository-url>
-cd <repository-name>
-npm i
-npm run dev
 ```
+
+The suggested price can be calculated based on market prices, demand, and other factors.
+
+---
+
+## 🚚 Logistics & Route Optimization
+
+An important feature of the agricultural supply chain is the transportation of goods.
+
+To reduce overall costs it can be beneficial to combine multiple farmers delivering their goods to multiple buyers.
+
+A route suggestion engine can take into account:
+
+Distance
+
+Vehicle capacity
+
+Number of stops
+
+Delivery deadlines
+
+Fuel cost
+
+Produce type
+
+Perishability
+
+It would utilize OpenStreetMap and OSRM combined with other route suggestion algorithms.
+
+A high-level overview would be something similar to:
+
+```text
+
+Farmer A ─┐
+
+Farmer B ─┼──► Collection Point ───► Buyer A
+
+Farmer C ─┘ └──► Buyer B
+
+```
+
+---
+
+## 🏗️ System Architecture
+
+```text
+
+FARMNEX
+
+│
+
+┌──────────────┼──────────────┐
+
+│ │ │
+
+Farmers Consumers Bulk Buyers
+
+│ │ │
+
+└──────────────┼──────────────┘
+
+│
+
+DIGITAL MARKETPLACE
+
+│
+
+┌────────────┼────────────┐
+
+│ │ │
+
+Pricing Demand Logistics
+
+Engine Forecasting Engine
+
+│ │ │
+
+└────────────┼────────────┘
+
+│
+
+Delivery Tracking
+
+```
+
+---
+
+## 🛠️ Technology Stack
+
+### Frontend
+
+React
+
+TypeScript
+
+Vite
+
+Tailwind CSS
+
+shadcn/ui
+
+### Backend
+
+Node.js
+
+Express.js
+
+REST APIs
+
+JWT Authentication
+
+### Database
+
+PostgreSQL
+
+Prisma ORM
+
+### AI & Data Processing
+
+Python
+
+FastAPI
+
+Scikit-learn
+
+XGBoost
+
+Pandas
+
+NumPy
+
+### Maps & Routing
+
+OpenStreetMap
+
+OSRM
+
+Dijkstra / A
+
+Vehicle Routing Problem (VRP) optimization
+
+### Deployment
+
+Vercel / Render
+
+PostgreSQL hosting through Supabase or Neon
+
+---
+
+## 🔄 Basic Workflow
+
+The main workflow in FarmNex is:
+
+```text
+
+1. Farmer/FPO registers
+
+↓
+
+2. Farmer lists available produce
+
+↓
+
+3. Consumer or bulk buyer searches
+
+↓
+
+4. Suitable suppliers are identified
+
+↓
+
+5. Price information is displayed
+
+↓
+
+6. Buyer places an order
+
+↓
+
+7. Logistics system plans pickup/delivery
+
+↓
+
+8. Order is delivered
+
+↓
+
+9. Payment and order status are updated
+
+```
+
+---
+
+## 🎯 Project Goal
+
+
+
+FarmNex is being developed as a prototype for Smart India Hackathon (SIH).
+
+The intent is not to build a regular agricultural shopping site. It would be beneficial to connect different aspects of the agricultural supply chain to optimize pricing, demand forecasting and logistics.
+
+---
+
+## 💻 Running the Project Locally
+
+Ensure that you have Node.js and npm installed.
+
+Clone the repository:
+
+```bash
+
+git clone
+
+```
+
+Go to the project directory:
+
+```bash
+
+cd farm-direct-connect
+
+```
+
+Install the dependencies:
+
+```bash
+
+npm install
+
+```
+
+Start the development server:
+
+```bash
+
+npm run dev
+
+```
+
+The application should then be available at the local development URL that is displayed in your terminal.
+
+---
+
+## 🚀 Current Status
+
+FarmNex is currently being developed as a working prototype.
+
+The project is focused on building the core marketplace first and then adding the AI, pricing and logistics components.
+
+---
+
+## 🤝 Team
+
+FarmNex is being developed as a team project for Smart India Hackathon.
+
+---
+
+## 📌 Future Improvements
+
+Some features that are planned for the future are:
+
+Real-time market price integration
+
+Better demand prediction using larger datasets
+
+FPO management
+
+B2B reverse bidding
+
+Digital payments and escrow support
+
+Live delivery tracking
+
+Multi-vehicle route optimization
+
+Farmer analytics dashboard
+
+Crop quality/image analysis
+
+Support for livestock products such as poultry and goats
+
+---
+
+## 📄 License
+
+This project is currently being developed for educational and hackathon purposes.
