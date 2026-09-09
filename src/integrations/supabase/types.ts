@@ -171,6 +171,48 @@ export type Database = {
         }
         Relationships: []
       }
+      requirements: {
+        Row: {
+          buyer_id: string
+          city: string
+          created_at: string
+          crop: string
+          deliver_by: string | null
+          id: string
+          max_price_per_kg: number
+          note: string
+          quantity_kg: number
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          buyer_id: string
+          city?: string
+          created_at?: string
+          crop: string
+          deliver_by?: string | null
+          id?: string
+          max_price_per_kg: number
+          note?: string
+          quantity_kg: number
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          buyer_id?: string
+          city?: string
+          created_at?: string
+          crop?: string
+          deliver_by?: string | null
+          id?: string
+          max_price_per_kg?: number
+          note?: string
+          quantity_kg?: number
+          status?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           id: string
