@@ -48,8 +48,46 @@ function Dashboard() {
       const { error } = await supabase.from("orders").update({ status }).eq("id", id);
       if (error) throw error;
     },
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["my-orders"] }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["my-orders"] });
+      queryClient.invalidateQueries({ queryKey: ["my-payouts"] });
+    },
   });
+
+  const payOrder = useMutation({
+    mutationFn: async (id: string) => {
+      const { error } = await supabase
+        .from("orders")
+        .update({ payment_status: "held", paid_at: new Date().toISOString() })
+        .eq("id", id);
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["my-orders"] });
+      queryClient.invalidateQueries({ queryKey: ["my-payouts"] });
+    },
+  });
+
+  const confirmPickup = useMutation({
+    mutationFn: async (id: string) => {
+      const { error } = await supabase
+        .from("orders")
+        .update({ status: "picked_up", picked_up_at: new Date().toISOString() })
+        .eq("id", id);
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["my-orders"] });
+      queryClient.invalidateQueries({ queryKey: ["my-payouts"] });
+    },
+  });
+
+  const payLabel: Record<string, string> = {
+    unpaid: "payment pending",
+    held: "paid · held until pickup",
+    released: "released to farmer",
+  };
+
 
   const closeListing = useMutation({
     mutationFn: async (id: string) => {
@@ -87,11 +125,18 @@ function Dashboard() {
                 List a crop
               </Link>
               <Link
+                to="/payouts"
+                className="rounded-full bg-surface/70 px-4 py-2.5 text-sm font-semibold text-ink ring-1 ring-line/70"
+              >
+                Payouts
+              </Link>
+              <Link
                 to="/"
                 className="rounded-full bg-surface/70 px-4 py-2.5 text-sm font-semibold text-ink ring-1 ring-line/70"
               >
                 Browse listings
               </Link>
+
             </div>
           </div>
         </div>
@@ -154,8 +199,10 @@ function Dashboard() {
                       {Number(o.price_per_kg)}/kg
                     </div>
                     <div className={meta}>
-                      {o.status} · ₹{(o.quantity_kg * Number(o.price_per_kg)).toLocaleString("en-IN")}
+                      {o.status} · ₹{(o.quantity_kg * Number(o.price_per_kg)).toLocaleString("en-IN")}{" "}
+                      · {payLabel[o.payment_status] ?? o.payment_status}
                     </div>
+
                     {o.note && <p className="mt-1 text-sm text-muted-foreground">“{o.note}”</p>}
                     {o.status === "placed" && (
                       <button
@@ -183,9 +230,31 @@ function Dashboard() {
                       {Number(o.price_per_kg)}/kg
                     </div>
                     <div className={meta}>
-                      {o.listings?.city} · {o.status}
+                      {o.listings?.city} · {o.status} ·{" "}
+                      {payLabel[o.payment_status] ?? o.payment_status}
+                    </div>
+                    <div className="mt-2 flex flex-wrap gap-2">
+                      {o.payment_status === "unpaid" && (
+                        <button
+                          onClick={() => payOrder.mutate(o.id)}
+                          className="rounded-full bg-leaf px-3 py-1.5 text-xs font-semibold text-surface"
+                        >
+                          Pay ₹
+                          {(o.quantity_kg * Number(o.price_per_kg)).toLocaleString("en-IN")} · held
+                          till pickup
+                        </button>
+                      )}
+                      {o.payment_status === "held" && o.status !== "picked_up" && (
+                        <button
+                          onClick={() => confirmPickup.mutate(o.id)}
+                          className="rounded-full bg-sun px-3 py-1.5 text-xs font-semibold text-surface"
+                        >
+                          Confirm pickup & release payment
+                        </button>
+                      )}
                     </div>
                   </div>
+
                 ))}
               </div>
             </div>

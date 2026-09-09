@@ -57,6 +57,9 @@ export type Database = {
           id: string
           listing_id: string
           note: string
+          paid_at: string | null
+          payment_status: string
+          picked_up_at: string | null
           price_per_kg: number
           quantity_kg: number
           status: string
@@ -67,6 +70,9 @@ export type Database = {
           id?: string
           listing_id: string
           note?: string
+          paid_at?: string | null
+          payment_status?: string
+          picked_up_at?: string | null
           price_per_kg: number
           quantity_kg: number
           status?: string
@@ -77,6 +83,9 @@ export type Database = {
           id?: string
           listing_id?: string
           note?: string
+          paid_at?: string | null
+          payment_status?: string
+          picked_up_at?: string | null
           price_per_kg?: number
           quantity_kg?: number
           status?: string
@@ -87,6 +96,50 @@ export type Database = {
             columns: ["listing_id"]
             isOneToOne: false
             referencedRelation: "listings"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      payouts: {
+        Row: {
+          amount: number
+          created_at: string
+          farmer_id: string
+          id: string
+          order_id: string
+          released_at: string | null
+          settled_at: string | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          amount: number
+          created_at?: string
+          farmer_id: string
+          id?: string
+          order_id: string
+          released_at?: string | null
+          settled_at?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          amount?: number
+          created_at?: string
+          farmer_id?: string
+          id?: string
+          order_id?: string
+          released_at?: string | null
+          settled_at?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "payouts_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: true
+            referencedRelation: "orders"
             referencedColumns: ["id"]
           },
         ]

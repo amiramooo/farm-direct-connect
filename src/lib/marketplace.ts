@@ -24,8 +24,28 @@ export type OrderRow = {
   price_per_kg: number;
   note: string;
   status: string;
+  payment_status: string;
+  paid_at: string | null;
+  picked_up_at: string | null;
   created_at: string;
   listings: { crop: string; city: string; farmer_id: string } | null;
+};
+
+export type PayoutRow = {
+  id: string;
+  order_id: string;
+  farmer_id: string;
+  amount: number;
+  status: string;
+  released_at: string | null;
+  settled_at: string | null;
+  created_at: string;
+  orders: {
+    quantity_kg: number;
+    price_per_kg: number;
+    status: string;
+    listings: { crop: string; city: string } | null;
+  } | null;
 };
 
 const listingSelect =
@@ -56,9 +76,22 @@ export async function fetchMyOrders(): Promise<OrderRow[]> {
   const { data, error } = await supabase
     .from("orders")
     .select(
-      "id, listing_id, buyer_id, quantity_kg, price_per_kg, note, status, created_at, listings(crop, city, farmer_id)",
+      "id, listing_id, buyer_id, quantity_kg, price_per_kg, note, status, payment_status, paid_at, picked_up_at, created_at, listings(crop, city, farmer_id)",
     )
     .order("created_at", { ascending: false });
   if (error) throw error;
   return (data ?? []) as unknown as OrderRow[];
 }
+
+export async function fetchMyPayouts(farmerId: string): Promise<PayoutRow[]> {
+  const { data, error } = await supabase
+    .from("payouts")
+    .select(
+      "id, order_id, farmer_id, amount, status, released_at, settled_at, created_at, orders(quantity_kg, price_per_kg, status, listings(crop, city))",
+    )
+    .eq("farmer_id", farmerId)
+    .order("created_at", { ascending: false });
+  if (error) throw error;
+  return (data ?? []) as unknown as PayoutRow[];
+}
+
