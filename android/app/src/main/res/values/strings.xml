@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">FarmNex</string>
+    <string name="title_activity_main">FarmNex</string>
+    <string name="package_name">com.farmnex.app</string>
+    <string name="custom_url_scheme">com.farmnex.app</string>
+</resources>
