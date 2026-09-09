@@ -17,6 +17,7 @@ import { Route as ForecastRouteImport } from './routes/forecast'
 import { Route as ListCropRouteImport } from './routes/list-crop'
 import { Route as LogisticsRouteImport } from './routes/logistics'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
+import { Route as AuthenticatedPayoutsRouteImport } from './routes/_authenticated/payouts'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -57,6 +58,11 @@ const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
   path: '/dashboard',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedPayoutsRoute = AuthenticatedPayoutsRouteImport.update({
+  id: '/payouts',
+  path: '/payouts',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -66,6 +72,7 @@ export interface FileRoutesByFullPath {
   '/list-crop': typeof ListCropRoute
   '/logistics': typeof LogisticsRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/payouts': typeof AuthenticatedPayoutsRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -75,6 +82,7 @@ export interface FileRoutesByTo {
   '/list-crop': typeof ListCropRoute
   '/logistics': typeof LogisticsRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/payouts': typeof AuthenticatedPayoutsRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -86,6 +94,7 @@ export interface FileRoutesById {
   '/list-crop': typeof ListCropRoute
   '/logistics': typeof LogisticsRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
+  '/_authenticated/payouts': typeof AuthenticatedPayoutsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -97,6 +106,7 @@ export interface FileRouteTypes {
     | '/list-crop'
     | '/logistics'
     | '/dashboard'
+    | '/payouts'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -106,6 +116,7 @@ export interface FileRouteTypes {
     | '/list-crop'
     | '/logistics'
     | '/dashboard'
+    | '/payouts'
   id:
     | '__root__'
     | '/'
@@ -116,6 +127,7 @@ export interface FileRouteTypes {
     | '/list-crop'
     | '/logistics'
     | '/_authenticated/dashboard'
+    | '/_authenticated/payouts'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -186,15 +198,24 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDashboardRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/payouts': {
+      id: '/_authenticated/payouts'
+      path: '/payouts'
+      fullPath: '/payouts'
+      preLoaderRoute: typeof AuthenticatedPayoutsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
 
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
+  AuthenticatedPayoutsRoute: typeof AuthenticatedPayoutsRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
+  AuthenticatedPayoutsRoute: AuthenticatedPayoutsRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =

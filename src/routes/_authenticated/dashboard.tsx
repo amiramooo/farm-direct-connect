@@ -48,8 +48,46 @@ function Dashboard() {
       const { error } = await supabase.from("orders").update({ status }).eq("id", id);
       if (error) throw error;
     },
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["my-orders"] }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["my-orders"] });
+      queryClient.invalidateQueries({ queryKey: ["my-payouts"] });
+    },
   });
+
+  const payOrder = useMutation({
+    mutationFn: async (id: string) => {
+      const { error } = await supabase
+        .from("orders")
+        .update({ payment_status: "held", paid_at: new Date().toISOString() })
+        .eq("id", id);
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["my-orders"] });
+      queryClient.invalidateQueries({ queryKey: ["my-payouts"] });
+    },
+  });
+
+  const confirmPickup = useMutation({
+    mutationFn: async (id: string) => {
+      const { error } = await supabase
+        .from("orders")
+        .update({ status: "picked_up", picked_up_at: new Date().toISOString() })
+        .eq("id", id);
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["my-orders"] });
+      queryClient.invalidateQueries({ queryKey: ["my-payouts"] });
+    },
+  });
+
+  const payLabel: Record<string, string> = {
+    unpaid: "payment pending",
+    held: "paid · held until pickup",
+    released: "released to farmer",
+  };
+
 
   const closeListing = useMutation({
     mutationFn: async (id: string) => {
